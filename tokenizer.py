@@ -48,5 +48,4 @@ def tokenize(string: str):
                     del all_tokens[saved_index]
                 all_tokens[saved_index] = new_t
                 index = saved_index + 1
-                pass
         index += 1
