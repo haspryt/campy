@@ -1,7 +1,7 @@
 from tokenizer import tokenize
-test = """DECLARE ScoreOne : INTAGER
-DECLARE ScoreTwo : INTAGER
-DECLARE HighestScore : INTAGER
+test = """DECLARE ScoreOne : INTEGER
+DECLARE ScoreTwo : INTEGER
+DECLARE HighestScore : INTEGER
 
 ScoreOne << INPUT
 ScoreTwo << INPUT

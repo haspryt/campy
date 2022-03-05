@@ -1,6 +1,6 @@
-DECLARE ScoreOne : INTAGER
-DECLARE ScoreTwo : INTAGER
-DECLARE HighestScore : INTAGER
+DECLARE ScoreOne : INTEGER
+DECLARE ScoreTwo : INTEGER
+DECLARE HighestScore : INTEGER
 
 ScoreOne << INPUT
 ScoreTwo << INPUT
