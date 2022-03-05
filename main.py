@@ -8,12 +8,12 @@ ScoreTwo << INPUT
 HighestScore << 54000
 
 IF ScoreOne > ScoreTwo THEN 
-    OUTPUT "PlayerOne beat PlayerTwo"
+    OUTPUT "PlayerOne beat PlayerTwo!"
     IF ScoreOne > HighestScore THEN
-        OUTPUT ScoreOne, " is the new high score"
+        OUTPUT ScoreOne, " is the new high score!"
     ENDIF
 ELSE
-    OUTPUT "PlayerOne lost"
+    OUTPUT "PlayerOne lost!"
 ENDIF"""
 
 tokens = tokenize(test)
