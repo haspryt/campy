@@ -1,5 +1,4 @@
-from tokenizer import tokenize
-test = """DECLARE ScoreOne : INTAGER
+DECLARE ScoreOne : INTAGER
 DECLARE ScoreTwo : INTAGER
 DECLARE HighestScore : INTAGER
 
@@ -14,7 +13,4 @@ IF ScoreOne > ScoreTwo THEN
     ENDIF
 ELSE
     OUTPUT "PlayerOne lost"
-ENDIF"""
-
-tokens = tokenize(test)
-print(tokens)
+ENDIF
