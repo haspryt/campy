@@ -1,5 +1,6 @@
 import re
 
+## to do: remove comments from tokens
 def tokenize(string: str):
     all_tokens = []
     token_rex = [
