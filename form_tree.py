@@ -1,5 +1,5 @@
 operators = [
-'+', '-', '*', '/', '>', '<', '=', '<>', '<=', '>=', '<-', '&',
+'+', '-', '*', '/', '>', '<', '=', '<>', '<=', '>=', '<-', '&', "AND", "NOT", "OR"
 "DECLARE", "OUTPUT", "INPUT", "IF", "ELSE", "CASE", "OTHERWISE", "FOR", "NEXT", "REPEAT", "UNTIL", "WHILE", "PROCEDURE", "CALL", "FUNCTION", "RETURN", "TYPE", "OPENFILE", "CLOSEFILE", "READFILE", "EOF", "WRITEFILE", "SEEK", "GETRECORD", "PUTRECORD", "CLASS", "PRIVATE", "PUBLIC",
 "RIGHT", "LENGTH", "MID", "LCASE", "UCASE", "INT", "RAND", "DIV", "MOD", "STEP"
 ]
