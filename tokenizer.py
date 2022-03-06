@@ -7,6 +7,7 @@ def tokenize(string: str):
         re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*"),
         re.compile(r"^[0-9]+"),
         re.compile(r"^<-"),
+        re.compile(r"^<>"),
         re.compile(r"^>="),
         re.compile(r"^<="),
         re.compile(r"^//"),
@@ -43,7 +44,7 @@ def tokenize(string: str):
                 saved_index = index
             else:
                 new_t = ""
-                for i in range(saved_index, index+1):
+                for i in range(saved_index, index + 1):
                     new_t = new_t + ''.join(all_tokens[i])
                 for _ in range(saved_index, index):
                     del all_tokens[saved_index]
