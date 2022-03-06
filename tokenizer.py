@@ -6,7 +6,7 @@ def tokenize(string: str):
     token_rex = [
         re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*"),
         re.compile(r"^[0-9]+"),
-        re.compile(r"^<<"),
+        re.compile(r"^<-"),
         re.compile(r"^>="),
         re.compile(r"^<="),
         re.compile(r"^//"),
