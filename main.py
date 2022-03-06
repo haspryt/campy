@@ -1,21 +1,5 @@
 from tokenizer import tokenize
-test = """DECLARE ScoreOne : INTEGER
-DECLARE ScoreTwo : INTEGER
-DECLARE HighestScore : INTEGER
-
-// Checks score
-ScoreOne <- INPUT
-ScoreTwo <- INPUT
-HighestScore <- 54000
-
-IF ScoreOne > ScoreTwo THEN 
-    OUTPUT "PlayerOne beat PlayerTwo!"
-    IF ScoreOne > HighestScore THEN
-        OUTPUT ScoreOne, " is the new high score!"
-    ENDIF
-ELSE
-    OUTPUT "PlayerOne lost!"
-ENDIF"""
+test = open("example_text.cpc", "r").read()
 
 tokens = tokenize(test)
 print(tokens)
