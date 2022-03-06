@@ -3,9 +3,9 @@ test = """DECLARE ScoreOne : INTEGER
 DECLARE ScoreTwo : INTEGER
 DECLARE HighestScore : INTEGER
 
-ScoreOne << INPUT
-ScoreTwo << INPUT
-HighestScore << 54000
+ScoreOne <- INPUT
+ScoreTwo <- INPUT
+HighestScore <- 54000
 
 IF ScoreOne > ScoreTwo THEN 
     OUTPUT "PlayerOne beat PlayerTwo!"
