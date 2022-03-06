@@ -34,8 +34,6 @@ def get_arg(index: int, all_tokens: list, operators: list):
 
 
 def form_tree(all_tokens: list, operators: list):
-    
-    #get_user_def_operators(all_tokens, operators)
     tree = ()
     for (index, token) in enumerate(all_tokens):
         p_counter = 0
@@ -49,15 +47,28 @@ def form_tree(all_tokens: list, operators: list):
 
         if token in operators and p_counter == 0:
             match token:
-                case '+'| '-' | '*' | '/' | '>' | '<' | '=' | '<>' | '<=' | '>=' | '<-' | '&' | "AND" | "NOT" | "OR":
+                case '+'| '-' | '*' | '/' | '>' | '<' | '=' | '<>' | '<=' | '>=' | '&' | "AND" | "NOT" | "OR" | "DIV" | "MOD":
                     args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
                     tree += ((token, args),)
+
+                case '<-':
+                    if all_tokens[index - 2] != "FOR":
+                        args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
+                        tree += ((token, args),)
                 
-                case "OUTPUT" | "DECLARE":
+                case "INPUT":
                     arg = get_arg(index + 1, all_tokens, operators)
-                    #print(arg)
-                    #print(index)
-                    tree += ((token, arg),)
+                    tree += (('<-', (arg, "input()")),)
+
+                case "OPENFILE":
+                    ident = all_tokens[index + 1]
+                    mode = all_tokens[index + 3]
+                    tree += ((token, (ident, mode)),)
+
+                case "DECLARE" | "PUBLIC" | "PRIVATE":
+                    arg = get_arg(index + 1, all_tokens, operators)
+                    v_type = get_arg(index + 3, all_tokens, operators)
+                    tree += ((token, (arg, v_type)),)
 
                 case "IF":
                     saved_index = index
@@ -67,8 +78,8 @@ def form_tree(all_tokens: list, operators: list):
                         current = all_tokens[index]
                         index += 1
                     condition = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
-                    saved_index = index
 
+                    saved_index = index
                     if_counter = 1
                     while (current != "ENDIF" or current != "ELSE") and if_counter >= 1:
                         current = all_tokens[index]
@@ -89,4 +100,60 @@ def form_tree(all_tokens: list, operators: list):
                         index += 1
                     block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
                     tree += ((token, block),)
+                
+                case "FOR":
+                    if all_tokens[index - 2] != "OPENFILE":
+                        ident = all_tokens[index + 1]
+                        init = all_tokens[index + 3]
+                        end = all_tokens[index + 5]
+                        step = 1
+                        if all_tokens[index + 6] == "STEP":
+                            step = all_tokens[index + 7]
+                        while current != "NEXT":
+                            current = all_tokens[index]
+                            index += 1
+                        block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                        tree += ((token, (ident, init, end, step)),)
+                
+                case "WHILE":
+                    saved_index = index
+                    current = token
+
+                    while current != "\n":
+                        current = all_tokens[index]
+                        index += 1
+                    condition = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+
+                    saved_index = index
+                    current = token
+
+                    while current != "ENDWHILE":                        
+                        current = all_tokens[index]
+                        index += 1
+                    block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    tree += ((token, (condition, block)),)
+
+                case "REPEAT":
+                    saved_index = index
+                    current = token
+
+                    while current != "UNTIL":                        
+                        current = all_tokens[index]
+                        index += 1
+                    block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+
+                    saved_index = index
+                    current = token
+
+                    while current != "\n":
+                        current = all_tokens[index]
+                        index += 1
+                    condition = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+
+                    tree += (block, ("WHILE", (condition, block))) # Hacky but works
+
+                case "OUTPUT" | "CALL" | "RETURN" | "EOF" | "CLOSEFILE" | _:
+                    arg = get_arg(index + 1, all_tokens, operators)
+                    tree += ((token, arg),)
+                    
     return tree
