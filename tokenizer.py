@@ -37,7 +37,7 @@ def tokenize(string: str):
             token = all_tokens[index]
         except:
             all_tokens = list(filter((" ").__ne__, all_tokens))
-            return all_tokens
+            break
         if token == "\"":
             ap_counter += 1
             if ap_counter % 2 == 1:
@@ -50,4 +50,21 @@ def tokenize(string: str):
                     del all_tokens[saved_index]
                 all_tokens[saved_index] = new_t
                 index = saved_index + 1
+        index += 1
+    
+    # remove comments
+    index = -1
+    saved_index = 0
+    while True:
+        try:
+            token = all_tokens[index]
+        except:
+            return all_tokens
+        if token == "//" and saved_index == -1:
+            saved_index = index
+        elif token == "\n" and saved_index != -1:
+            for i in range(saved_index, index + 1):
+                del all_tokens[saved_index]
+            saved_index = -1
+            index = saved_index
         index += 1

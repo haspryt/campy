@@ -3,6 +3,7 @@ test = """DECLARE ScoreOne : INTEGER
 DECLARE ScoreTwo : INTEGER
 DECLARE HighestScore : INTEGER
 
+// Checks score
 ScoreOne <- INPUT
 ScoreTwo <- INPUT
 HighestScore <- 54000
