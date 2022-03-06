@@ -53,8 +53,8 @@ def tokenize(string: str):
         index += 1
     
     # remove comments
-    index = -1
-    saved_index = 0
+    index = 0
+    saved_index = -1
     while True:
         try:
             token = all_tokens[index]
