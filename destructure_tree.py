@@ -16,10 +16,10 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 					tail += "false"
 				case "DATE":
 					tail += "datetime.datetime.new()"
-			return "    " * recursion_count + destructure_tree(tree[1][0], recursion_count + 1, operators) + tail + "\n"
+			return "  " * recursion_count + destructure_tree(tree[1][0], recursion_count + 1, operators) + tail + "\n"
 
 		case "<-":
-			return "    " * recursion_count + tree[1][0] + " = " + destructure_tree(tree[1][1], recursion_count + 1, operators) + "\n"
+			return "  " * recursion_count + tree[1][0] + " = " + destructure_tree(tree[1][1], recursion_count + 1, operators) + "\n"
 		
 		case "<" | ">" | ">=" | "<=":
 			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " " + op + " " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
@@ -33,13 +33,13 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 		case "IF":
 			cond = destructure_tree(tree[1][0], recursion_count + 1, operators)
 			block = destructure_tree(tree[1][1], recursion_count + 1, operators)
-			return "    " * recursion_count + "if " + cond + ":\n" + block
+			return "  " * recursion_count + "if " + cond + ":\n" + block
 		
 		case "ELSE":
-			return "    " * recursion_count + "else:\n" + destructure_tree(tree[1], recursion_count + 1, operators)
+			return "  " * recursion_count + "else:\n" + destructure_tree(tree[1], recursion_count + 1, operators)
 		
 		case "OUTPUT":
-			return "    " * recursion_count + "print(" + destructure_tree(tree[1], recursion_count + 1, operators) + ")\n"
+			return "  " * recursion_count + "print(" + destructure_tree(tree[1], recursion_count + 1, operators) + ")\n"
 
 
 def destructure_tree(tree: tuple, recursion_count: int, operators: list):
