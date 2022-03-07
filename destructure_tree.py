@@ -40,9 +40,6 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 		
 		case "OUTPUT":
 			return "    " * recursion_count + "print(" + destructure_tree(tree[1], recursion_count + 1, operators) + ")\n"
-		
-		case "INPUT":
-			return "input()"
 
 
 def destructure_tree(tree: tuple, recursion_count: int, operators: list):
@@ -53,7 +50,7 @@ def destructure_tree(tree: tuple, recursion_count: int, operators: list):
 			to_return += destructure_tree(t, recursion_count + 1, operators)
 		return to_return
 	else:
-		if left in operators or left == "INPUT":
+		if left in operators:
 			return match_operator(tree, recursion_count, operators)
 		else:
 			return tree
