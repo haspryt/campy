@@ -12,7 +12,7 @@ operators = [
 test = open("example_text.cpc", "r").read()
 
 
-#syntax_check("example_text.cpc")
+syntax_check("example_text.cpc")
 
 tokens = tokenize(test)
 get_user_def_operators(tokens, operators)
