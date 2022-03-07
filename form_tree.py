@@ -35,7 +35,13 @@ def get_arg(index: int, all_tokens: list, operators: list):
 
 def form_tree(all_tokens: list, operators: list):
     tree = ()
-    for (index, token) in enumerate(all_tokens):
+    real_index = 0
+    while True:
+        index = real_index
+        try:
+            token = all_tokens[real_index]
+        except:
+            break
         p_counter = 0
         if index == 0 and token == '(':
             p_counter -= 1
@@ -56,19 +62,21 @@ def form_tree(all_tokens: list, operators: list):
                         args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
                         tree += ((token, args),)
                 
-                case "INPUT":
-                    arg = get_arg(index + 1, all_tokens, operators)
-                    tree += (('<-', (arg, "input()")),)
+                #case "INPUT":
+                #    arg = get_arg(index + 1, all_tokens, operators)
+                #    tree += (('<-', (arg, "input()")),)
 
                 case "OPENFILE":
                     ident = all_tokens[index + 1]
                     mode = all_tokens[index + 3]
                     tree += ((token, (ident, mode)),)
+                    real_index += 3
 
                 case "DECLARE" | "PUBLIC" | "PRIVATE":
                     arg = get_arg(index + 1, all_tokens, operators)
                     v_type = get_arg(index + 3, all_tokens, operators)
                     tree += ((token, (arg, v_type)),)
+                    real_index += 3
 
                 case "IF":
                     saved_index = index
@@ -91,6 +99,7 @@ def form_tree(all_tokens: list, operators: list):
                     
                     block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
                     tree += ((token, (condition, block)),)
+                    real_index = index
 
                 case "ELSE":
                     saved_index = index
@@ -100,6 +109,7 @@ def form_tree(all_tokens: list, operators: list):
                         index += 1
                     block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
                     tree += ((token, block),)
+                    real_index = index
                 
                 case "FOR":
                     if all_tokens[index - 2] != "OPENFILE":
@@ -114,6 +124,7 @@ def form_tree(all_tokens: list, operators: list):
                             index += 1
                         block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
                         tree += ((token, (ident, init, end, step)),)
+                        real_index = index
                 
                 case "WHILE":
                     saved_index = index
@@ -132,6 +143,7 @@ def form_tree(all_tokens: list, operators: list):
                         index += 1
                     block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
                     tree += ((token, (condition, block)),)
+                    real_index += index
 
                 case "REPEAT":
                     saved_index = index
@@ -151,9 +163,12 @@ def form_tree(all_tokens: list, operators: list):
                     condition = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
 
                     tree += (block, ("WHILE", (condition, block))) # Hacky but works
+                    real_index = index
 
                 case "OUTPUT" | "CALL" | "RETURN" | "EOF" | "CLOSEFILE" | _:
                     arg = get_arg(index + 1, all_tokens, operators)
                     tree += ((token, arg),)
+
+        real_index += 1
                     
     return tree
