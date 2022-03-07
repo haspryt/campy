@@ -13,5 +13,5 @@ IF ScoreOne > ScoreTwo THEN
         OUTPUT ScoreOne, " is the new high score!"
     ENDIF
 ELSE
-    OUTPUT "PlayerOne lost"
+    OUTPUT "PlayerOne lost!"
 ENDIF
