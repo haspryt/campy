@@ -18,14 +18,10 @@ loop_check("example_text.cpc")
 tokens = tokenize(test)
 get_user_def_operators(tokens, operators)
 tree = form_tree(tokens, operators)
-#print(tree)
-#print("-------------------")
+
 if type(tree[0]) == str: 
     source = destructure_tree(tree, 0, operators)
 else:
     source = destructure_tree(tree, -1, operators)
-#print("-------------------")
-print(source)
-#for i in tree:
-#    print(i)
 
+print(source)

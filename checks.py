@@ -26,13 +26,12 @@ def loop_check(file_name: str):
     exp_repeat_indent = 0
     exp_for_indent = 0
     exp_indent = 0
-    current_line = 1
+    current_line = 0
 
     for line in cpc_lines:
+        current_line += 1
         if (line.strip() == '') or line.startswith("//"):
-            cpc_lines.remove(line)
-
-    for line in cpc_lines:
+            continue
         if exp_indent > 0:
             indent_str = "    " * exp_indent
         else:
@@ -95,4 +94,4 @@ def loop_check(file_name: str):
             raise Exception("Missing indent, line: " + str(current_line))
 
         exp_indent = exp_if_indent + exp_for_indent + exp_while_indent + exp_repeat_indent
-        current_line += 1
+        
