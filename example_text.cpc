@@ -7,7 +7,7 @@ ScoreTwo <- INPUT
 HighestScore <- 54000
 
 // Checks score
-IF ScoreOne > ScoreTwo THEN 
+IF ScoreOne > ScoreTwo THEN
     OUTPUT "PlayerOne beat PlayerTwo!"
     IF ScoreOne > HighestScore THEN
         OUTPUT ScoreOne, " is the new high score!"

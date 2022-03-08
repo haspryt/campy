@@ -30,6 +30,8 @@ def get_arg(index: int, all_tokens: list, operators: list):
                         p_counter -= 1
             return form_tree(all_tokens[slice(index + 1, saved_index)], operators)
         case _:
+            if all_tokens[index] == "INPUT":
+                all_tokens[index] = "input('')"
             return all_tokens[index]
 
 

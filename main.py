@@ -1,7 +1,7 @@
 from tokenizer import tokenize
 from form_tree import form_tree, get_user_def_operators
 from destructure_tree import destructure_tree
-from syntax_checker import syntax_check
+from checks import syntax_check, loop_check
 
 operators = [
     '+', '-', '*', '/', '>', '<', '=', '<>', '<=', '>=', '<-', '&', "AND", "NOT", "OR",
@@ -13,6 +13,7 @@ test = open("example_text.cpc", "r").read()
 
 
 syntax_check("example_text.cpc")
+loop_check("example_text.cpc")
 
 tokens = tokenize(test)
 get_user_def_operators(tokens, operators)
