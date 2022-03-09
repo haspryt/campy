@@ -22,7 +22,7 @@ def get_arg(index: int, all_tokens: list, operators: list):
             saved_index = index
             p_counter = 1
             while p_counter > 0:
-                index += 1
+                index -= 1
                 match all_tokens[index]:
                     case ')':
                         p_counter += 1
@@ -45,8 +45,8 @@ def form_tree(all_tokens: list, operators: list):
         except:
             break
         p_counter = 0
-        if index == 0 and token == '(':
-            p_counter -= 1
+        #if index == 0 and token == '(':
+        #    p_counter -= 1
         match token:
             case '(':
                 p_counter += 1

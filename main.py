@@ -19,6 +19,9 @@ tokens = tokenize(test)
 get_user_def_operators(tokens, operators)
 tree = form_tree(tokens, operators)
 
+for t in tree:
+    print(t)
+
 if type(tree[0]) == str: 
     source = destructure_tree(tree, 0, operators)
 else:
