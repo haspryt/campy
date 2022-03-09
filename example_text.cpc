@@ -5,8 +5,8 @@ DECLARE HighestScore : INTEGER
 ScoreOne <- INPUT
 ScoreTwo <- INPUT
 HighestScore <- 54000
-    
-// Checks score
+
+// Checks scores
 IF ScoreOne > ScoreTwo THEN
     OUTPUT "PlayerOne beat PlayerTwo!"
     IF ScoreOne > HighestScore THEN
