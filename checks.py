@@ -30,7 +30,7 @@ def loop_check(file_name: str):
 
     for line in cpc_lines:
         current_line += 1
-        if (line.strip() == '') or line.startswith("//"):
+        if (line.strip() == '') or line.strip().startswith("//"):
             continue
         if exp_indent > 0:
             indent_str = "    " * exp_indent
