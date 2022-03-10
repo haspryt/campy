@@ -23,12 +23,15 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 		
 		case "<" | ">" | ">=" | "<=" | "+" | "-" | "*" | "/":
 			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " " + op + " " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
-		
+
 		case "=":
 			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " == " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
 
 		case "<>":
 			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " != " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
+		
+		case "&":
+			return '(str(' + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") + str(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 		
 		case "IF" | "WHILE":
 			cond = destructure_tree(tree[1][0], recursion_count + 1, operators)
@@ -39,15 +42,26 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 			return "  " * recursion_count + "else:\n" + destructure_tree(tree[1], recursion_count + 1, operators)
 		
 		case "OUTPUT":
-			return "  " * recursion_count + "print(" + destructure_tree(tree[1], recursion_count + 1, operators) + ")\n"
+			#out = ''
+			#if type(tree[1][0]) == tuple:
+			#	for (t, _) in enumerate(tree[1][0]):
+			#		print(tree[1][0][t])
+					#out += 'str(' + destructure_tree(tree[1][0][t], recursion_count + 1, operators) + ')'
+			#else:
+				#print(tree[1])
+			#	out += 'str(' + tree[1][0] + ')'
+			return "  " * recursion_count + "print" + destructure_tree(tree[1][0], recursion_count + 1, operators) + "\n"
+		
+		case _:
+			return "  " * recursion_count + "poopies"
 
 
 def destructure_tree(tree: tuple, recursion_count: int, operators: list):
+	#print(tree)
 	left = tree[0]
 	if type(left) == tuple:
 		to_return = ''
 		for t in tree:
-			print(t)
 			to_return += destructure_tree(t, recursion_count + 1, operators)
 		return to_return
 	else:

@@ -7,11 +7,11 @@ ScoreTwo <- INPUT
 HighestScore <- 54000
 
 // Checks scores
-WHILE (1 + ScoreOne) > ScoreTwo // test
+REPEAT  //test
     OUTPUT "PlayerOne beat PlayerTwo!"
     IF ScoreOne > HighestScore THEN
-        OUTPUT ScoreOne, " is the new high score!"
+        OUTPUT ScoreOne, " is the new high score!", ScoreTwo
     ENDIF
 //ELSE
                             //OUTPUT "PlayerOne lost!"
-ENDWHILE
+UNTIL (1 + ScoreOne) > ScoreTwo

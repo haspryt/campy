@@ -4,7 +4,7 @@ from destructure_tree import destructure_tree
 from checks import syntax_check, loop_check
 
 operators = [
-    '+', '-', '*', '/', '>', '<', '=', '<>', '<=', '>=', '<-', '&', "AND", "NOT", "OR",
+    '+', '-', '*', '/', '>', '<', '=', '<>', '<=', '>=', '<-', '&', ',', "AND", "NOT", "OR",
     "DECLARE", "OUTPUT", "IF", "ELSE", "CASE", "OTHERWISE", "FOR", "REPEAT", "UNTIL", "WHILE", "PROCEDURE", "CALL", "FUNCTION", "RETURN", "TYPE", "OPENFILE", "CLOSEFILE", "READFILE", "EOF", "WRITEFILE", "SEEK", "GETRECORD", "PUTRECORD", "CLASS", "PRIVATE", "PUBLIC",
     "RIGHT", "LENGTH", "MID", "LCASE", "UCASE", "INT", "RAND", "DIV", "MOD", "STEP"
 ]

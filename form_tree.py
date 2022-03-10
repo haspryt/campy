@@ -1,3 +1,5 @@
+from destructure_tree import destructure_tree
+
 #guide_tokens = ["ENDIF", "ENDCASE", "ENDWHILE", "ENDPROCEDURE", "ENDFUNCTION", "ENDTYPE", "ENDCLASS", "THEN", "TO", "OF"]
 
 def get_user_def_operators(all_tokens: list, operators: list):
@@ -17,8 +19,6 @@ def get_arg(index: int, all_tokens: list, operators: list):
                         p_counter += 1
                     case ')':
                         p_counter -= 1
-            #print("!")
-            #print(form_tree(all_tokens[saved_index + 1 : index], operators))
             return form_tree(all_tokens[saved_index + 1 : index], operators)
         case ')':
             saved_index = index
@@ -30,14 +30,10 @@ def get_arg(index: int, all_tokens: list, operators: list):
                         p_counter += 1
                     case '(':
                         p_counter -= 1
-            #print("!")
-            #print(form_tree(all_tokens[saved_index + 1 : index], operators))
             return form_tree(all_tokens[index + 1 : saved_index], operators)
         case _:
             if all_tokens[index] == "INPUT":
                 all_tokens[index] = "input('')"
-            #print("!")
-            #print(all_tokens[index])
             return all_tokens[index]
 
 
@@ -51,8 +47,8 @@ def form_tree(all_tokens: list, operators: list):
             token = all_tokens[real_index]
         except:
             break
-        #if index == 0 and token == '(':
-        #    p_counter -= 1
+        if index == 0 and token == '(':
+            p_counter -= 1
         match token:
             case '(':
                 p_counter += 1
@@ -61,21 +57,18 @@ def form_tree(all_tokens: list, operators: list):
 
         if token in operators and p_counter == 0:
             match token:
-                case '+'| '-' | '*' | '/' | '>' | '<' | '=' | '<>' | '<=' | '>=' | '&' | "AND" | "NOT" | "OR" | "DIV" | "MOD":
+                case '+'| '-' | '*' | '/' | '>' | '<' | '=' | '<>' | '<=' | '>=' | "AND" | "NOT" | "OR" | "DIV" | "MOD":
                     args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
-                    #print("!")
-                    #print(args)
                     tree += ((token, args),)
-                    #while token 
+                
+                case ',' | '&':
+                    args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
+                    tree += (('&', args),)
 
                 case '<-':
                     if all_tokens[index - 2] != "FOR":
                         args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
                         tree += ((token, args),)
-                
-                #case "INPUT":
-                #    arg = get_arg(index + 1, all_tokens, operators)
-                #    tree += (('<-', (arg, "input()")),)
 
                 case "OPENFILE":
                     ident = all_tokens[index + 1]
@@ -96,10 +89,7 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "THEN":
                         current = all_tokens[index]
                         index += 1
-                    #print(all_tokens[saved_index + 1 : index])
                     condition = form_tree(all_tokens[saved_index + 1 : index], operators)
-                    #print(condition)
-                    #print()
 
                     saved_index = index
                     if_counter = 1
@@ -155,7 +145,7 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "ENDWHILE":                        
                         current = all_tokens[index]
                         index += 1
-                    block = form_tree(all_tokens[saved_index + 1 : index], operators)
+                    block = form_tree(all_tokens[saved_index : index], operators)
                     tree += ((token, (condition, block)),)
                     real_index += index
 
@@ -163,23 +153,53 @@ def form_tree(all_tokens: list, operators: list):
                     saved_index = index
                     current = token
 
-                    while current != "UNTIL":                        
+                    while current != "UNTIL":
                         current = all_tokens[index]
                         index += 1
-                    block = form_tree(all_tokens[saved_index + 1 : index], operators)
+                    block = form_tree(all_tokens[saved_index + 1 : index - 1], operators)
 
                     saved_index = index
-                    current = token
+                    #current = token
 
                     while current != "\n":
-                        current = all_tokens[index]
+                        try:
+                            current = all_tokens[index]
+                        except:
+                            break
                         index += 1
-                    condition = form_tree(all_tokens[saved_index + 1 : index], operators)
+                    condition = form_tree(all_tokens[saved_index : index], operators)
+                    tree += block
+                    tree += (("WHILE", (condition, block)),) # Hacky but hey
+                    real_index += index
 
-                    tree += (block, ("WHILE", (condition, block))) # Hacky but works
+                case "OUTPUT":
+                    saved_index = index
+                    t = token
+                    while t != '\n':
+                        index += 1
+                        try:
+                            t = all_tokens[index]
+                        except:
+                            break
+                    print(all_tokens[saved_index + 1 : index])
+                    arg = form_tree(all_tokens[saved_index + 1 : index], operators)
+                    try:
+                        temp = arg[0]
+                        exists = True
+                    except:
+                        exists = False
+                    if not exists:
+                        arg = (get_arg(saved_index + 1, all_tokens, operators),)
+                    #real_arg = ()
+                    #for a in arg:
+                    #    real_arg += (('str(' + a + ')'),)
+                    tree += ((token, arg),)
                     real_index = index
 
-                case "OUTPUT" | "CALL" | "RETURN" | "EOF" | "CLOSEFILE" | _:
+                #case '&':
+                #    pass
+                
+                case "CALL" | "RETURN" | "EOF" | "CLOSEFILE" | _:
                     arg = get_arg(index + 1, all_tokens, operators)
                     tree += ((token, arg),)
 

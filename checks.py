@@ -50,8 +50,6 @@ def loop_check(file_name: str):
             l = len(indent_str)
             if line[l] == ' ':
                 raise Exception("Unexpected indent, line: " + str(current_line))
-            #line_split = line.split("//", 1)
-            #line_stripped = line_split[0].strip()
             if line_stripped.startswith("ENDIF") or line_stripped.startswith("ENDWHILE") or line_stripped.startswith("UNTIL") or line_stripped.startswith("NEXT"):
                 raise Exception("Unexpected indent, line: " + str(current_line))
             elif line_stripped.startswith("IF"):
