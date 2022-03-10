@@ -17,7 +17,9 @@ def get_arg(index: int, all_tokens: list, operators: list):
                         p_counter += 1
                     case ')':
                         p_counter -= 1
-            return form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+            #print("!")
+            #print(form_tree(all_tokens[saved_index + 1 : index], operators))
+            return form_tree(all_tokens[saved_index + 1 : index], operators)
         case ')':
             saved_index = index
             p_counter = 1
@@ -28,23 +30,27 @@ def get_arg(index: int, all_tokens: list, operators: list):
                         p_counter += 1
                     case '(':
                         p_counter -= 1
-            return form_tree(all_tokens[slice(index + 1, saved_index)], operators)
+            #print("!")
+            #print(form_tree(all_tokens[saved_index + 1 : index], operators))
+            return form_tree(all_tokens[index + 1 : saved_index], operators)
         case _:
             if all_tokens[index] == "INPUT":
                 all_tokens[index] = "input('')"
+            #print("!")
+            #print(all_tokens[index])
             return all_tokens[index]
 
 
 def form_tree(all_tokens: list, operators: list):
     tree = ()
     real_index = 0
+    p_counter = 0
     while True:
         index = real_index
         try:
             token = all_tokens[real_index]
         except:
             break
-        p_counter = 0
         #if index == 0 and token == '(':
         #    p_counter -= 1
         match token:
@@ -57,7 +63,10 @@ def form_tree(all_tokens: list, operators: list):
             match token:
                 case '+'| '-' | '*' | '/' | '>' | '<' | '=' | '<>' | '<=' | '>=' | '&' | "AND" | "NOT" | "OR" | "DIV" | "MOD":
                     args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
+                    #print("!")
+                    #print(args)
                     tree += ((token, args),)
+                    #while token 
 
                 case '<-':
                     if all_tokens[index - 2] != "FOR":
@@ -87,7 +96,10 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "THEN":
                         current = all_tokens[index]
                         index += 1
-                    condition = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    #print(all_tokens[saved_index + 1 : index])
+                    condition = form_tree(all_tokens[saved_index + 1 : index], operators)
+                    #print(condition)
+                    #print()
 
                     saved_index = index
                     if_counter = 1
@@ -99,7 +111,7 @@ def form_tree(all_tokens: list, operators: list):
                         elif current == "ENDIF":
                             if_counter -= 1
                     
-                    block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    block = form_tree(all_tokens[saved_index + 1 : index], operators)
                     tree += ((token, (condition, block)),)
                     real_index = index
 
@@ -109,7 +121,7 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "ENDIF":                        
                         current = all_tokens[index]
                         index += 1
-                    block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    block = form_tree(all_tokens[saved_index + 1 : index], operators)
                     tree += ((token, block),)
                     real_index = index
                 
@@ -124,7 +136,7 @@ def form_tree(all_tokens: list, operators: list):
                         while current != "NEXT":
                             current = all_tokens[index]
                             index += 1
-                        block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                        block = form_tree(all_tokens[saved_index + 1 : index], operators)
                         tree += ((token, (ident, init, end, step)),)
                         real_index = index
                 
@@ -135,7 +147,7 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "\n":
                         current = all_tokens[index]
                         index += 1
-                    condition = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    condition = form_tree(all_tokens[saved_index + 1 : index], operators)
 
                     saved_index = index
                     current = token
@@ -143,7 +155,7 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "ENDWHILE":                        
                         current = all_tokens[index]
                         index += 1
-                    block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    block = form_tree(all_tokens[saved_index + 1 : index], operators)
                     tree += ((token, (condition, block)),)
                     real_index += index
 
@@ -154,7 +166,7 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "UNTIL":                        
                         current = all_tokens[index]
                         index += 1
-                    block = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    block = form_tree(all_tokens[saved_index + 1 : index], operators)
 
                     saved_index = index
                     current = token
@@ -162,7 +174,7 @@ def form_tree(all_tokens: list, operators: list):
                     while current != "\n":
                         current = all_tokens[index]
                         index += 1
-                    condition = form_tree(all_tokens[slice(saved_index + 1, index)], operators)
+                    condition = form_tree(all_tokens[saved_index + 1 : index], operators)
 
                     tree += (block, ("WHILE", (condition, block))) # Hacky but works
                     real_index = index

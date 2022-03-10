@@ -64,7 +64,7 @@ def tokenize(string: str):
         if token == "//" and saved_index == -1:
             saved_index = index
         elif token == "\n" and saved_index != -1:
-            for i in range(saved_index, index + 1):
+            for i in range(saved_index, index):
                 del all_tokens[saved_index]
             saved_index = -1
             index = saved_index
