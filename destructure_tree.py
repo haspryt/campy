@@ -30,10 +30,10 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 		case "<>":
 			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " != " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
 		
-		case "IF":
+		case "IF" | "WHILE":
 			cond = destructure_tree(tree[1][0], recursion_count + 1, operators)
 			block = destructure_tree(tree[1][1], recursion_count + 1, operators)
-			return "  " * recursion_count + "if " + cond + ":\n" + block
+			return "  " * recursion_count + op.lower() + " " + cond + ":\n" + block
 		
 		case "ELSE":
 			return "  " * recursion_count + "else:\n" + destructure_tree(tree[1], recursion_count + 1, operators)
