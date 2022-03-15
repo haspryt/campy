@@ -7,7 +7,45 @@ def get_user_def_operators(all_tokens: list, operators: list):
         if token == "FUNCTION" or token == "PROCEDURE":
             operators.append(all_tokens[token + 1])
 
+def chain(all_tokens: list, operators: list):
+    if len(all_tokens) == 1:
+        return all_tokens[0]
+
+    chainable = ['+', '-', '*', '/', 'MOD', 'DIV', '&', ',']
+    left = get_arg(0, all_tokens, operators)
+    #print("!!" + str(left))
+    p_counter = 0
+    for (index, token) in enumerate(all_tokens):
+        match token:
+            case '(':
+                p_counter += 1
+            case ')':
+                p_counter -= 1
+        if (token in chainable) and (p_counter == 0):
+            if token == ',':
+                token = '&'
+            return (token, (left, chain(all_tokens[index + 1:], operators)))
+    return all_tokens[0]
+
 def get_arg(index: int, all_tokens: list, operators: list):
+    p_counter = 0
+    if all_tokens[index] in operators:
+        saved_index = index
+        index += 1
+        match all_tokens[index]:
+            case '(':
+                p_counter += 1
+            case ')':
+                p_counter -= 1
+        index += 1
+        while p_counter > 0:
+            match all_tokens[index]:
+                case '(':
+                    p_counter += 1
+                case ')':
+                    p_counter -= 1
+            index += 1
+        return form_tree(all_tokens[saved_index : index], operators)
     match all_tokens[index]:
         case '(':
             saved_index = index
@@ -30,7 +68,10 @@ def get_arg(index: int, all_tokens: list, operators: list):
                         p_counter += 1
                     case '(':
                         p_counter -= 1
-            return form_tree(all_tokens[index + 1 : saved_index], operators)
+            if not all_tokens[index - 1] in operators:
+                return form_tree(all_tokens[index + 1 : saved_index], operators)
+            else:
+                return form_tree(all_tokens[index : saved_index], operators)
         case _:
             if all_tokens[index] == "INPUT":
                 all_tokens[index] = "input('')"
@@ -40,15 +81,16 @@ def get_arg(index: int, all_tokens: list, operators: list):
 def form_tree(all_tokens: list, operators: list):
     tree = ()
     real_index = 0
-    p_counter = 0
+    if all_tokens[0] == '(':
+        p_counter = -1
+    else:
+        p_counter = 0
     while True:
         index = real_index
         try:
             token = all_tokens[real_index]
         except:
             break
-        if index == 0 and token == '(':
-            p_counter -= 1
         match token:
             case '(':
                 p_counter += 1
@@ -57,13 +99,38 @@ def form_tree(all_tokens: list, operators: list):
 
         if token in operators and p_counter == 0:
             match token:
-                case '+'| '-' | '*' | '/' | '>' | '<' | '=' | '<>' | '<=' | '>=' | "AND" | "NOT" | "OR" | "DIV" | "MOD":
-                    args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
-                    tree += ((token, args),)
+                case '+'| '-' | '*' | '/' | ',' | '&' | "DIV" | "MOD":
+                    saved_index = index
+                    index += 1
+                    while not token in ['>', '<', '==', '!=', '<>', '>=', '<=', 'AND', 'NOT', 'OR', '\n']:
+                        try:
+                            token = all_tokens[index]
+                        except:
+                            #index -= 1
+                            break
+                        index += 1
+                    p_c = 0
+                    if all_tokens[saved_index - 1] == ')':
+                        p_c += 1
+                    while p_c > 0:
+                        saved_index -= 1
+                        current = all_tokens[saved_index]
+                        if current == '(':
+                            p_c -= 1
+                        elif current == ')':
+                            p_c += 1
+                    #if not all_tokens[saved_index] in ['IF', 'WHILE', 'UNTIL']:
+                    out = chain(all_tokens[saved_index - 1 : index], operators)
+                    #else:
+                    #    out = chain(all_tokens[saved_index : index], operators)
+                    real_index = index 
+                    #print(out)
+                    tree += out
                 
-                case ',' | '&':
+                case  '>' | '<' | '=' | '<>' | '<=' | '>=' | "AND" | "NOT" | "OR":
                     args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
-                    tree += (('&', args),)
+                    print("!" + str(args))
+                    tree += ((token, args),)
 
                 case '<-':
                     if all_tokens[index - 2] != "FOR":
@@ -181,7 +248,7 @@ def form_tree(all_tokens: list, operators: list):
                             t = all_tokens[index]
                         except:
                             break
-                    print(all_tokens[saved_index + 1 : index])
+                    #print(all_tokens[saved_index + 1 : index])
                     arg = form_tree(all_tokens[saved_index + 1 : index], operators)
                     try:
                         temp = arg[0]

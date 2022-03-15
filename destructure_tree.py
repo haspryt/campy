@@ -50,7 +50,7 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 			#else:
 				#print(tree[1])
 			#	out += 'str(' + tree[1][0] + ')'
-			return "  " * recursion_count + "print" + destructure_tree(tree[1][0], recursion_count + 1, operators) + "\n"
+			return "  " * recursion_count + "print(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ")\n"
 		
 		case _:
 			return "  " * recursion_count + "poopies"
