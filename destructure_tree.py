@@ -31,6 +31,7 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " != " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
 		
 		case "&":
+			print(tree)
 			return '(str(' + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") + str(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 		
 		case "IF" | "WHILE":

@@ -81,10 +81,10 @@ def get_arg(index: int, all_tokens: list, operators: list):
 def form_tree(all_tokens: list, operators: list):
     tree = ()
     real_index = 0
-    if all_tokens[0] == '(':
-        p_counter = -1
-    else:
-        p_counter = 0
+    #if all_tokens[0] == '(':
+    #    p_counter = -1
+    #else:
+    p_counter = 0
     while True:
         index = real_index
         try:
@@ -129,7 +129,7 @@ def form_tree(all_tokens: list, operators: list):
                 
                 case  '>' | '<' | '=' | '<>' | '<=' | '>=' | "AND" | "NOT" | "OR":
                     args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
-                    print("!" + str(args))
+                    #print("!" + str(args))
                     tree += ((token, args),)
 
                 case '<-':
@@ -214,7 +214,7 @@ def form_tree(all_tokens: list, operators: list):
                         index += 1
                     block = form_tree(all_tokens[saved_index : index], operators)
                     tree += ((token, (condition, block)),)
-                    real_index += index
+                    real_index = index
 
                 case "REPEAT":
                     saved_index = index
@@ -235,9 +235,12 @@ def form_tree(all_tokens: list, operators: list):
                             break
                         index += 1
                     condition = form_tree(all_tokens[saved_index : index], operators)
+                    #print("!")
+                    #print(all_tokens[saved_index : index])
+                    #print(condition)
                     tree += block
                     tree += (("WHILE", (condition, block)),) # Hacky but hey
-                    real_index += index
+                    real_index = index
 
                 case "OUTPUT":
                     saved_index = index
@@ -269,6 +272,12 @@ def form_tree(all_tokens: list, operators: list):
                 case "CALL" | "RETURN" | "EOF" | "CLOSEFILE" | _:
                     arg = get_arg(index + 1, all_tokens, operators)
                     tree += ((token, arg),)
+                    while token != '\n':
+                        real_index += 1
+                        try:
+                            token = all_tokens[real_index]
+                        except:
+                            break
 
         real_index += 1
                     
