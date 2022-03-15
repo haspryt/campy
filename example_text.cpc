@@ -7,11 +7,11 @@ ScoreTwo <- INPUT
 HighestScore <- 54000
 
 // Checks scores
-REPEAT  //test
+FOR i <- 0 TO 20 STEP 2 //test
     OUTPUT ScoreOne
     IF ScoreOne > HighestScore THEN
         OUTPUT ScoreOne, " is the new high score!", ScoreTwo
     ENDIF
 //ELSE
                             //OUTPUT "PlayerOne lost!"
-UNTIL (ScoreOne + 1) > ScoreTwo
+NEXT

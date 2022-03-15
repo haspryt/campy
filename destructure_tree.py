@@ -31,7 +31,7 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " != " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
 		
 		case "&":
-			print(tree)
+			#print(tree)
 			return '(str(' + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") + str(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 		
 		case "IF" | "WHILE":
@@ -53,8 +53,15 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 			#	out += 'str(' + tree[1][0] + ')'
 			return "  " * recursion_count + "print(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ")\n"
 		
+		case "FOR":
+			c_blk = tree[1][0]
+			var = c_blk[0]
+			rg = 'range(' + c_blk[1] + ', ' + c_blk[2] + ', ' + c_blk[3] + ')'
+			return "  " * recursion_count + "for " + var + " in " + rg + ":\n" + destructure_tree(tree[1][1], recursion_count + 1, operators)
+			print(rg)
+
 		case _:
-			return "  " * recursion_count + "poopies"
+			return "  " * recursion_count + "uh oh stinky code nonononono"
 
 
 def destructure_tree(tree: tuple, recursion_count: int, operators: list):

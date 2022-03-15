@@ -24,7 +24,7 @@ def chain(all_tokens: list, operators: list):
         if (token in chainable) and (p_counter == 0):
             if token == ',':
                 token = '&'
-            return (token, (left, chain(all_tokens[index + 1:], operators)))
+            return ((token, (left, chain(all_tokens[index + 1:], operators))),)
     return all_tokens[0]
 
 def get_arg(index: int, all_tokens: list, operators: list):
@@ -184,17 +184,20 @@ def form_tree(all_tokens: list, operators: list):
                 
                 case "FOR":
                     if all_tokens[index - 2] != "OPENFILE":
+                        saved_index = index
                         ident = all_tokens[index + 1]
                         init = all_tokens[index + 3]
                         end = all_tokens[index + 5]
-                        step = 1
+                        step = '1'
+                        to_add = 6
                         if all_tokens[index + 6] == "STEP":
                             step = all_tokens[index + 7]
-                        while current != "NEXT":
-                            current = all_tokens[index]
+                            to_add = 8
+                        while token != "NEXT":
+                            token = all_tokens[index]
                             index += 1
-                        block = form_tree(all_tokens[saved_index + 1 : index], operators)
-                        tree += ((token, (ident, init, end, step)),)
+                        block = form_tree(all_tokens[saved_index + to_add : index], operators)
+                        tree += (("FOR", ((ident, init, end, step), block)),)
                         real_index = index
                 
                 case "WHILE":
