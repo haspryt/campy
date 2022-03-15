@@ -22,13 +22,13 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 			return "  " * recursion_count + tree[1][0] + " = " + destructure_tree(tree[1][1], recursion_count + 1, operators) + "\n"
 		
 		case "<" | ">" | ">=" | "<=" | "+" | "-" | "*" | "/":
-			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " " + op + " " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
+			return "(float(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") " + op + " float(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 
 		case "=":
-			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " == " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
+			return "(str(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") == str(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 
 		case "<>":
-			return "(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + " != " + destructure_tree(tree[1][1], recursion_count + 1, operators) + ")"
+			return "(str(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") != str(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 		
 		case "&":
 			#print(tree)
