@@ -20,7 +20,7 @@ This project is still relatively early in development but most basic features sh
 | `REPEAT ... UNTIL` | Done | |
 | `FOR` | Done | |
 | `CASE` | Not started | |
-| `+`, `-`, `*`, `/`, `DIV`, `MOD` | Partly done | `DIV` and `MOD` not yet implemented, order of operations not taken into account (use parentheses) |
+| `+`, `-`, `*`, `/`, `DIV`, `MOD` | Partly done | Order of operations not taken into account (use parentheses) |
 | `>`, `<`, `>=`, `<=`, `=`, `<>` | Done | |
 | `&`, `,` (concatenation) | Done | |
 | `OUTPUT` | Done | |

@@ -24,6 +24,12 @@ def match_operator(tree: tuple, recursion_count: int, operators: list):
 		case "<" | ">" | ">=" | "<=" | "+" | "-" | "*" | "/":
 			return "(float(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") " + op + " float(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 
+		case "DIV":
+			return "(float(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") // float(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
+		
+		case "MOD":
+			return "(int(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") \% int(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
+
 		case "=":
 			return "(str(" + destructure_tree(tree[1][0], recursion_count + 1, operators) + ") == str(" + destructure_tree(tree[1][1], recursion_count + 1, operators) + "))"
 
