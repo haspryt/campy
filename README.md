@@ -9,6 +9,7 @@ python main.py <input_filename> <output_filename>
 This project is still relatively early in development but most basic features should already work. THe official Cambridge pseudocode guide can be found [here](https://www.cambridgeinternational.org/Images/639920-2021-pseudocode-guide-for-teachers.pdf).
 ## Feature matrix
 | Feature | Status | Notes |
+|---------|--------|-------|
 | Variables | Done | |
 | Types | Done | |
 | Constants | Not started | |
