@@ -6,12 +6,12 @@ git clone git@github.com:haspryt/campy && cd campy
 python main.py <input_filename> <output_filename>
 ```
 # Current state
-This project is still relatively early in development but most basic features should already work. THe official Cambridge pseudocode guide can be found [here](https://www.cambridgeinternational.org/Images/639920-2021-pseudocode-guide-for-teachers.pdf).
+This project is still relatively early in development but most basic features should already work. The official Cambridge pseudocode guide can be found [here](https://www.cambridgeinternational.org/Images/639920-2021-pseudocode-guide-for-teachers.pdf).
 ## Feature matrix
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Variables | Done | |
-| Types | Done | |
+| Typing | Done | |
 | Constants | Not started | |
 | Functions, procedures | Not started | |
 | File handling | Not started | |
