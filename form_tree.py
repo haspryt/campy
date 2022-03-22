@@ -27,6 +27,14 @@ def chain(all_tokens: list, operators: list):
             return ((token, (left, chain(all_tokens[index + 1:], operators))),)
     return all_tokens[0]
 
+def get_fn_args(tokens_slice: list):
+    to_return = ()
+    for i in range(0, len(tokens_slice), 3):
+        ident = tokens_slice[i]
+        current_type = tokens_slice[i + 2]
+        to_return += ((ident, current_type),)
+    return to_return
+
 def get_arg(index: int, all_tokens: list, operators: list):
     p_counter = 0
     if all_tokens[index] in operators:
@@ -271,6 +279,26 @@ def form_tree(all_tokens: list, operators: list):
 
                 #case '&':
                 #    pass
+
+                case "PROCEDURE" | "FUNCTION":
+                    saved_index = index
+                    ident = all_tokens[index + 1]
+                    while token != '\n':
+                        index += 1
+                        token = all_tokens[index]
+                    newline_index = index
+                    offset = 1
+                    ret_type = "NONE"
+                    if all_tokens[saved_index] = "FUNCTION":
+                        offset += 2
+                        ret_type = all_tokens[index - 1]
+                    fn_args = get_fn_args(all_tokens[saved_index + 3 : newline_index - offset])
+                    while token != "ENDPROCEDURE" and token != "ENDFUNCTION":
+                        index += 1
+                        token = all_tokens[index]
+                    block = form_tree(all_tokens[newline_index : index], operators)
+                    tree += ((all_tokens[saved_index], (ident, fn_args, ret_type, block)),)
+                    real_index = index
                 
                 case "CALL" | "RETURN" | "EOF" | "CLOSEFILE" | _:
                     arg = get_arg(index + 1, all_tokens, operators)
