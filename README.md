@@ -13,7 +13,7 @@ This project is still relatively early in development but most basic features sh
 | Variables | Done | |
 | Typing | Done | |
 | Constants | Not started | |
-| Functions, procedures | Not started | |
+| Functions, procedures | WIP | |
 | File handling | Not started | |
 | `IF`, `ELSE` | Done | |
 | `WHILE` | Done | |
