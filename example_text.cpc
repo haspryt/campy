@@ -6,6 +6,12 @@ ScoreOne <- INPUT
 ScoreTwo <- INPUT
 HighestScore <- 54000
 
+FUNCTION my_fn(thingy: INTEGER) RETURNS INTEGER
+    DECLARE new_thingy: INTEGER
+    new_thingy <- thingy + 1
+    RETURN new_thingy
+ENDFUNCTION
+
 // Checks scores
 FOR i <- 0 TO 20 STEP 2 //test
     OUTPUT ScoreOne

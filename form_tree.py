@@ -3,9 +3,9 @@ from destructure_tree import destructure_tree
 #guide_tokens = ["ENDIF", "ENDCASE", "ENDWHILE", "ENDPROCEDURE", "ENDFUNCTION", "ENDTYPE", "ENDCLASS", "THEN", "TO", "OF"]
 
 def get_user_def_operators(all_tokens: list, operators: list):
-    for token in all_tokens:
+    for (i, token) in enumerate(all_tokens):
         if token == "FUNCTION" or token == "PROCEDURE":
-            operators.append(all_tokens[token + 1])
+            operators.append(all_tokens[i + 1])
 
 def chain(all_tokens: list, operators: list):
     if len(all_tokens) == 1:
@@ -142,8 +142,17 @@ def form_tree(all_tokens: list, operators: list):
 
                 case '<-':
                     if all_tokens[index - 2] != "FOR":
-                        args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
-                        tree += ((token, args),)
+                        #args = (get_arg(index - 1, all_tokens, operators), get_arg(index + 1, all_tokens, operators))
+                        until = index
+                        while token != "\n":
+                            until += 1
+                            try:
+                                token = all_tokens[until]
+                            except:
+                                break
+                        args = (all_tokens[index - 1], chain(all_tokens[index + 1 : until], operators))
+                        tree += ((all_tokens[index], args),)
+                        real_index = until
 
                 case "OPENFILE":
                     ident = all_tokens[index + 1]
@@ -289,7 +298,7 @@ def form_tree(all_tokens: list, operators: list):
                     newline_index = index
                     offset = 1
                     ret_type = "NONE"
-                    if all_tokens[saved_index] = "FUNCTION":
+                    if all_tokens[saved_index] == "FUNCTION":
                         offset += 2
                         ret_type = all_tokens[index - 1]
                     fn_args = get_fn_args(all_tokens[saved_index + 3 : newline_index - offset])

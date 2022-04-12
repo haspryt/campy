@@ -7,7 +7,6 @@ def syntax_check(file_name: str):
 
     valid_chars = list(string.ascii_lowercase) + list(string.ascii_uppercase) + ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '?', '!', '.', '@', '^', '~', '`', '\'', '_', '|', '/', '#', '$', '&', '%', '{', '}', '+', '*', ':', ';', ',', '>', '<', '=', '(', ')', '[', ']', '-', ' ', '\"']
     current_line = 1
-    
 
     for line in cpc_lines:
         for char in range(len(line) - 1):
@@ -97,4 +96,3 @@ def loop_check(file_name: str):
             raise Exception("Missing indent, line: " + str(current_line))
 
         exp_indent = exp_if_indent + exp_for_indent + exp_while_indent + exp_repeat_indent
-        
